@@ -12,7 +12,7 @@ TDD 방식을 사용하여 기능 개발 테스트를 해본적이 없어서 스
 ---
 [1.효율적이고 체계적인 소프트웨어 테스트]()<br>
 [2.명세 기반 테스트](https://github.com/YiHanSeul/TDD/blob/master/2%EC%9E%A5/Specification-based%20testing.md)<br>
-[3.구조적 테스트와 코드 커버리지]()<br>
+[3.구조적 테스트와 코드 커버리지](https://github.com/YiHanSeul/TDD/blob/master/3%EC%9E%A5/Structural-testing-code-coverage.md)<br>
 [4.계약 설계]()<br>
 [5.속성 기반 테스트]()<br>
 [6.테스트 더블과 모의 객체]()<br>
