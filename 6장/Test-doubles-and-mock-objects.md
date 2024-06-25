@@ -1,4 +1,4 @@
-## 테스트 더블과 모의 객체
+## 💡테스트 더블과 모의 객체
 
 - 스텁, 페이크, 모의 객체를 사용해서 테스트를 단순화 하는 방법
 - 모의 객체가 무엇인지, 모의 객체를 언제 사용해야 하는지, 언제 사용하지 말아야 하는지에 대한 이해
@@ -65,7 +65,7 @@
 
 
 ### 의존성 스텁화
-```
+```java
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -90,7 +90,7 @@ public class InvoiceFilterWithDatabase {
 ```
 
 
-```
+```java
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -140,7 +140,7 @@ public class InvoiceFilterWithDatabaseTest {
 
 **IssuedInvoices 클래스를 스텁으로 만들어 DB와 연결하지 않도록함**
 
-```
+```java
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -164,7 +164,7 @@ public class InvoiceFilter {
 ```
 
 
-```
+```java
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -213,13 +213,13 @@ public class InvoiceFilterTest {
 <hr>
 
 ### 💡모의객체와 기댓값
-```
+```java
 public interface SAP {
     void send(Invoice invoice); //SAP 통신 캡슐화
 }
 ```
 
-```
+```java
 import java.util.List;
 
 public class SAPInvoiceSender {
@@ -243,7 +243,7 @@ public class SAPInvoiceSender {
 - SAPInvoiceSender 클래스를 테스트 해보자. InvoiceFilter를 테스트 하는 것이 목표가 아니기 때문에 이 클래스를 스텁으로 만들어서 테스트 하려는 메서드를 테스트해야 한다. 스텁은 작은 값을 가진 송장 목록을 반환한다. 테스트의 주목적은 작은 값의 송장이 모두 SAP에 전송되는지 확인하는 것이다. SAP에 있는 send() 메서드 호출이 발생했는지 확인하면 된다. <br>
 - 모키토는 모의 객체와의 상호작용을 모두 기록한다. SAP 인터페이스를 모의해서 테스트 대상 클래스에 전달하고, 호출되기를 기대하는 메서드가 호출되었는지 확인하기 위해 verify 단언문을 확인한다. 현재 테스트 메서드의 경우, send 메서드가 mauricio와 frank 송장에 대해 둘 다 호출되기를 기대한다.
 
-```
+```java
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -278,7 +278,7 @@ public class SAPInvoiceSenderTest {
 ```
 **|모키토 veerify 실패 시 메세지**
 sender.sendLowValuedInvoices(); 코드를 주석할 경우<br>
-```
+```java
 Wanted but not invoked:
 sap.send( // send가 호출되지 않음
 	Invoice{customer='Mauricio', value=20}
@@ -293,7 +293,7 @@ Actually, there were zero interactions with this mock.
 
 **모키토 기댓값 예시**
 
-```
+```java
 // 어떤 송장에 대해 send 메서드가 정확히 두 번 호출되었음을 검증
 verify(sap, times(2)).send(any(Invoice.class));
 
@@ -305,7 +305,7 @@ verify(sap, times(1)).send(frank);
 ```
 
 **작은 값을 가진 송장이 없는 경우**
-```
+```java
     @Test
     void noLowValueInvoices() {
         List<Invoice> invoices = emptyList();
@@ -327,7 +327,7 @@ verify(sap, times(1)).send(frank);
     >- 고객코드는 고객 이름의 첫 두 글자. 고객이름이 두글자보다 짧으면 'X'로 한다.
 
 
-```
+```java
 //SapInvoice 클래스
 public class SapInvoice {
     private final String customer;
@@ -347,7 +347,7 @@ public class SapInvoice {
 }
 ```
 
-```
+```java
 //SAP 인터페이스
 public interface SAP {
 		// 새로 만든 SapInvoice 엔티티를 받음
@@ -355,7 +355,7 @@ public interface SAP {
 }
 ```
 
-```
+```java
 //SAPInvoiceSender 클래스
 public class SAPInvoiceSender {
 
@@ -393,7 +393,7 @@ public class SAPInvoiceSender {
 
 ```
 
-```
+```java
 // SAPInvoiceSender 신규 구현 사항 테스트
 @Test
 void sendSapInvoiceToSap() {
@@ -412,7 +412,7 @@ void sendSapInvoiceToSap() {
 }
 ```
 
-```
+```java
 //Invoice를 SapInvoice로 변경하는 클래스
 public class InvoiceToSapInvoiceConverter {
 
@@ -436,7 +436,7 @@ public class InvoiceToSapInvoiceConverter {
 
 **모키토의 ArgumentCaptor 기능을 이용한 테스트**
 
-```
+```java
 public class SAPInvoiceSenderTest {
 
     private InvoiceFilter filter = mock(InvoiceFilter.class);
@@ -482,7 +482,7 @@ public class SAPInvoiceSenderTest {
 >- 프로그램은 몇몇 송장에 전송 실패가 일어나더라도 모든 송장을 보내려고 시도해야한다.
 
 | SAP Exception 처리
-```
+```java
 public List<Invoice> sendLowValuedInvoices() {
       List<Invoice> failedInvoices = new ArrayList<>();
 
@@ -507,7 +507,7 @@ public List<Invoice> sendLowValuedInvoices() {
 
 | 예외를 던지는 모의 객체
 - doThrow().when()를 호출하여 송장 중 하나에 대해 예외를 던지도록 강요한다.
-```
+```java
 @Test
   void returnFailedInvoices() {
       Invoice mauricio = new Invoice("Mauricio", 20);
@@ -547,7 +547,7 @@ public List<Invoice> sendLowValuedInvoices() {
 ### 모의 객체 단점
 
 - **테스트가 덜 현실적일 수 있다.**
-    - 코드가 아니라 모의 객체를 테스트
+    - 코드가 아니라 모의 객체를 테스트를 하도록 만든다고 믿는다.
     - 상용 버전에서 클래스끼리 통신하는 방식이 잘못될 수 있는데, 그 부분을 놓칠 수 있음
 - **모의 객체를 사용한 테스트는 사용하지 않는 테스트보다 코드와 결합하게 된다.**
     - 모의 객체를 사용하여 테스트를 작성하면 테스트 대상 클래스에 대한 정보를 너무 많이 알게 된다.
